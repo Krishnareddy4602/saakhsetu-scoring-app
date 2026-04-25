@@ -29,8 +29,7 @@ export default function App() {
     <div className="container">
       <h1>SaakhSetu — Farmer Scoring</h1>
       <p className="subtitle">
-        Enter the applicant details below to compute a rule-based score and
-        view the top reason codes that explain it.
+        Enter the applicant details below to compute a rule-based score.
       </p>
 
       {error && <div className="alert alert-error">{error}</div>}
