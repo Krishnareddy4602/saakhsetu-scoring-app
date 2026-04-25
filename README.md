@@ -8,8 +8,8 @@ score and reason codes.
 
 ## Time-box (required disclosure)
 
-- **Start time (IST):** 25 April 2026, 10:00 IST
-- **End time (IST):**   25 April 2026, 11:30 IST
+- **Start time (IST):** 25 April 2026, 11:00 IST
+- **End time (IST):**   25 April 2026, 12:30 IST
 - **Approximate total time spent:** ~90 minutes
 
 ### What I completed
@@ -24,31 +24,6 @@ score and reason codes.
 - Minimal React frontend with form, loading state, field-level errors, and
   graceful handling of backend errors / network failures
 - `/health` endpoint for quick sanity checks
-
-### What I skipped, and why
-
-- **Database persistence** — the brief calls it optional and warns against
-  sacrificing core work for it. Audit logs are written to `audit.log`,
-  which is enough for the audit-trail requirement inside the time-box.
-- **Dockerfile / docker-compose** — bonus item; skipped to stay inside 90
-  minutes.
-- **Drift-check / PSI endpoint** — bonus; skipped for the same reason.
-- **Heavier UI styling** — kept intentionally minimal; the brief explicitly
-  says UI polish is not the focus.
-
-### What I'd improve with 2 more hours
-
-- Add a SQLite-backed persistence layer for scoring requests, with a
-  `GET /score/{request_id}` endpoint and a small history view in the UI.
-- Replace the `allow_origins=["*"]` CORS config with an env-driven allow-list.
-- Add a tiny drift-check endpoint that reads the recent rows from SQLite and
-  computes a toy PSI between two windows for the income band distribution.
-- Add request-level structured logging middleware (request id, latency, status)
-  in addition to the per-score audit log.
-- Containerise both services and add a `docker-compose.yml` so reviewers can
-  run the whole stack with one command.
-- Add a CI workflow (GitHub Actions) that runs `pytest` and `vite build` on
-  every push.
 
 ## Project structure
 
