@@ -1,11 +1,3 @@
-"""Structured audit logging setup.
-
-Logs every scoring request as a JSON line to both stdout and `audit.log`
-(in the backend working directory). We intentionally avoid logging anything
-that could be considered sensitive — only the inputs needed to reproduce
-the score, plus the score and reason codes.
-"""
-
 import json
 import logging
 import sys
@@ -38,7 +30,6 @@ def get_logger() -> logging.Logger:
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
     except OSError:
-        # Fall back to stdout only if the file isn't writable (e.g. in tests)
         pass
 
     _logger = logger
@@ -51,7 +42,7 @@ def log_scoring_event(
     score: float,
     reason_codes: list[str],
 ) -> None:
-    """Emit one structured audit log entry for a scoring request."""
+    
     payload = {
         "event": "score_computed",
         "request_id": request_id,

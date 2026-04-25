@@ -1,17 +1,3 @@
-"""Rule-based scoring logic for SaakhSetu.
-
-The scoring is intentionally simple and explainable. It returns a score in
-[0, 100] and exactly three reason codes that explain the main drivers.
-
-Weights (out of 100):
-    - Repayment history       : 50
-    - Annual income band      : 30
-    - Land holding size       : 20
-
-Reason codes are picked from the three input dimensions so the explanation
-mirrors the inputs that actually moved the score.
-"""
-
 from typing import List, Tuple
 
 from .schemas import ScoreRequest
@@ -25,7 +11,6 @@ INCOME_BAND_POINTS = {
 
 
 def _land_component(land_area_acres: float) -> Tuple[float, str]:
-    """Score the land holding (max 20) and return a reason code."""
     if land_area_acres < 1:
         return 6.0, "marginal_landholding"
     if land_area_acres < 2.5:
@@ -36,7 +21,6 @@ def _land_component(land_area_acres: float) -> Tuple[float, str]:
 
 
 def _repayment_component(repayment: float) -> Tuple[float, str]:
-    """Scale repayment history (0-100) onto a 0-50 scale."""
     points = (repayment / 100.0) * 50.0
     if repayment >= 80:
         code = "good_repayment"
@@ -48,7 +32,6 @@ def _repayment_component(repayment: float) -> Tuple[float, str]:
 
 
 def _income_component(band: str) -> Tuple[float, str]:
-    """Score the income band and return a matching reason code."""
     points = INCOME_BAND_POINTS[band]
     code_map = {
         "<2L": "low_income_band",
@@ -60,12 +43,6 @@ def _income_component(band: str) -> Tuple[float, str]:
 
 
 def compute_score(req: ScoreRequest) -> Tuple[float, List[str]]:
-    """Compute the score and reason codes for a validated request.
-
-    Returns a (score, reason_codes) tuple where reason_codes has exactly 3
-    entries — one each for repayment, income, and land holding (in that
-    order, since repayment carries the largest weight).
-    """
     repay_pts, repay_code = _repayment_component(req.repayment_history_score)
     income_pts, income_code = _income_component(req.annual_income_band)
     land_pts, land_code = _land_component(req.land_area_acres)

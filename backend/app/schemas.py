@@ -1,5 +1,3 @@
-"""Pydantic request/response schemas for the SaakhSetu scoring API."""
-
 from datetime import datetime
 from typing import List, Literal
 from uuid import UUID
@@ -10,8 +8,6 @@ IncomeBand = Literal["<2L", "2-5L", "5-10L", ">10L"]
 
 
 class ScoreRequest(BaseModel):
-    """Input payload for the /score endpoint."""
-
     land_area_acres: float = Field(
         ...,
         gt=0,
@@ -42,7 +38,6 @@ class ScoreRequest(BaseModel):
 
 
 class ScoreResponse(BaseModel):
-    """Successful response from the /score endpoint."""
 
     request_id: UUID
     score: float = Field(..., ge=0, le=100)

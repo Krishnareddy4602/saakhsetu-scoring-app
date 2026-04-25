@@ -1,5 +1,3 @@
-"""SaakhSetu scoring API — FastAPI application."""
-
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -17,8 +15,6 @@ app = FastAPI(
     version="0.1.0",
     description="Rule-based credit-style scoring for smallholder farmers.",
 )
-
-# In a real deployment we'd lock this down to known frontend origins.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -29,7 +25,6 @@ app.add_middleware(
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(_: Request, exc: RequestValidationError):
-    """Return clean 422s with a flat list of field-level error messages."""
     errors = []
     for err in exc.errors():
         loc = ".".join(str(p) for p in err.get("loc", []) if p != "body")
